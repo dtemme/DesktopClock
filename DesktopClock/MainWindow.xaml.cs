@@ -122,7 +122,7 @@ namespace DesktopClock
             var transWhiteBrush = new SolidColorBrush(TransparentColor(whiteBrush.Color, 160));
             var transBlackBrush = new SolidColorBrush(TransparentColor(blackBrush.Color, 160));
             if (isWhiteTheme)
-                //White font 
+                //White font
                 AttachColors(whiteBrush, transBlackBrush, blackBrush);
             else
                 //Black font
@@ -213,9 +213,16 @@ namespace DesktopClock
             {
                 SetValue(AutostartProperty, value);
                 if (value)
-                    autostart.Add(System.Reflection.Assembly.GetExecutingAssembly().Location);
+                {
+                    var executable = System.Reflection.Assembly.GetExecutingAssembly().Location;
+                    if (executable.EndsWith(".dll"))
+                        executable = executable[0..^4] + ".exe";
+                    autostart.Add(executable);
+                }
                 else
+                {
                     autostart.Remove();
+                }
             }
         }
 
